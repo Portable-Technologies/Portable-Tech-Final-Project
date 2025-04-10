@@ -1,0 +1,25 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: clo835
+  region: us-east-1
+  version: "1.31"
+
+availabilityZones: ["us-east-1a", "us-east-1b", "us-east-1c"]
+
+iam:
+  withOIDC: true  # Required for IAM roles for service accounts
+
+managedNodeGroups:
+  - name: nodegroup
+    instanceType: t3.medium
+    desiredCapacity: 2
+    minSize: 2
+    maxSize: 2
+    ssh:
+      allow: false  # You can set enableSsm: true if needed
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["*"]
