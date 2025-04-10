@@ -1,0 +1,47 @@
+name : Build docker and push docker images to ECR
+
+on:
+  push:
+    branches:
+      - main
+
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push MySQL image
+        id: build-and-push-mysql
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile_mysql
+          push: true
+          tags: ${{ steps.login-ecr.outputs.registry }}/mysql:0.${{ github.run_number }}
+          # tags: ${{ steps.login-ecr.outputs.registry }}/mysql:latest
+
+      - name: Build and push application image
+        id: build-and-push-app
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.login-ecr.outputs.registry }}/application:0.${{ github.run_number }}
+          # tags: ${{ steps.login-ecr.outputs.registry }}/application:latest
