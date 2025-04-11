@@ -8,3 +8,5 @@ data:
   GROUP_NAME: "Cloud Cadets"
   GROUP_SLOGAN: "We Orchestrate. You Deploy."
   Database: "employees"
+  DBPORT: "3306"
+  APP_COLOR: "blue"
