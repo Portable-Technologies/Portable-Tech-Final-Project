@@ -47,6 +47,8 @@ Portable-Tech-Final-Project/
 `sudo mv -v /tmp/eksctl /usr/local/bin`
 
 ### - Create EKS Cluster
+update eks_config.yaml
+`cat eks_config.yaml | grep ARN`
 `eksctl create cluster -f eks_config.yaml`
 
 ### - Install kubectl 
@@ -57,4 +59,5 @@ sudo mv ./kubectl /usr/local/bin/
 alias k='kubectl'
 ```
 
-`cat eks_config.yaml | grep ARN`
+### - Install The Amazon EBS CSI driver 
+`kubectl apply -k 'github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.32'`
