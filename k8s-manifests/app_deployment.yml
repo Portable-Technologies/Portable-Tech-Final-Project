@@ -16,7 +16,7 @@ spec:
         app: employees
     spec:
       imagePullSecrets:
-        - name: aws-secret
+        - name: ecr-secret
       containers:
         - name: app-employees
           image: 108561850742.dkr.ecr.us-east-1.amazonaws.com/application:latest
@@ -39,7 +39,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: app-config
-                  key: Database
+                  key: DATABASE
             - name: BACKGROUND_IMAGE_URL
               valueFrom:
                 configMapKeyRef:
