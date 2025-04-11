@@ -16,7 +16,7 @@ spec:
         app: mysql
     spec:
       imagePullSecrets:
-        - name: aws-secret
+        - name: ecr-secret
       containers:
         - name: mysqldb-container
           image: 108561850742.dkr.ecr.us-east-1.amazonaws.com/mysql:latest
@@ -28,12 +28,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mysql-secrets
-                  key: MYSQL_ROOT_PASSWORD
+                  key: DBPWD
             - name: MYSQL_DATABASE
               valueFrom:
                 configMapKeyRef:
-                  name: mysql-config
-                  key: MYSQL_DATABASE
+                  name: app-config
+                  key: DATABASE
           volumeMounts:
             - name: mysql-storage
               mountPath: /var/lib/mysql
