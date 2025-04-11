@@ -28,12 +28,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mysql-secrets
-                  key: MYSQL_ROOT_PASSWORD
+                  key: DBPWD
             - name: MYSQL_DATABASE
               valueFrom:
                 configMapKeyRef:
-                  name: mysql-config
-                  key: MYSQL_DATABASE
+                  name: app-config
+                  key: DATABASE
           volumeMounts:
             - name: mysql-storage
               mountPath: /var/lib/mysql

@@ -39,7 +39,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: app-config
-                  key: Database
+                  key: DATABASE
             - name: BACKGROUND_IMAGE_URL
               valueFrom:
                 configMapKeyRef:
