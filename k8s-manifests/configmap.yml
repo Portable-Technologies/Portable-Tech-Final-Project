@@ -4,9 +4,9 @@ metadata:
   name: app-config
   namespace: final
 data:
-  BACKGROUND_IMAGE_URL: "s3://afth-images/background1.jpg"
+  BACKGROUND_IMAGE_URL: "s3://afth-images/background2.jpg"
   GROUP_NAME: "Cloud Cadets"
   GROUP_SLOGAN: "We Orchestrate. You Deploy."
-  Database: "employees"
+  DATABASE: "employees"
   DBPORT: "3306"
   APP_COLOR: "blue"
