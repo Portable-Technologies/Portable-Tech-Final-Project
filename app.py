@@ -3,6 +3,7 @@ from pymysql import connections
 import os
 import random
 import argparse
+import boto3
 
 
 app = Flask(__name__)
@@ -13,7 +14,29 @@ DBPWD = os.environ.get("DBPWD") or "passwors"
 DATABASE = os.environ.get("DATABASE") or "employees"
 COLOR_FROM_ENV = os.environ.get('APP_COLOR') or "lime"
 DBPORT = int(os.environ.get("DBPORT"))
-s3=os.environ.get("s3url")
+
+# Config values
+image_url_s3 = os.getenv('BACKGROUND_IMAGE_URL')
+group_name = os.getenv('GROUP_NAME', 'My Group')
+group_slogan = os.getenv('GROUP_SLOGAN')
+local_image_path = '/tmp/background.jpg'
+
+# AWS credentials from env
+session = boto3.session.Session(
+    region_name=os.getenv('AWS_REGION'),
+    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+    aws_session_token=os.getenv('AWS_SESSION_TOKEN')
+)
+s3 = session.client('s3')
+
+# Extract bucket and key from the S3 URL
+bucket = image_url_s3.replace("s3://", "").split('/')[0]
+key = "/".join(image_url_s3.replace("s3://", "").split('/')[1:])
+
+# Download image from S3
+s3.download_file(bucket, key, local_image_path)
+print(f"Downloaded background image from {image_url_s3}")
 
 # Create a connection to the MySQL database
 db_conn = connections.Connection(
@@ -48,11 +71,11 @@ COLOR = random.choice(["red", "green", "blue", "blue2", "darkblue", "pink", "lim
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('addemp.html', color=color_codes[COLOR], image=s3)
+    return render_template('addemp.html', color=color_codes[COLOR], image="/static/background.jpg", group_name=group_name, group_slogan=group_slogan)
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html', color=color_codes[COLOR], image=s3)
+    return render_template('about.html', color=color_codes[COLOR], image="/static/background.jpg", group_name=group_name, group_slogan=group_slogan)
     
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
@@ -76,11 +99,11 @@ def AddEmp():
         cursor.close()
 
     print("all modification done...")
-    return render_template('addempoutput.html', name=emp_name, color=color_codes[COLOR], image=s3)
+    return render_template('addempoutput.html', name=emp_name, color=color_codes[COLOR], image="/static/background.jpg", group_name=group_name, group_slogan=group_slogan)
 
 @app.route("/getemp", methods=['GET', 'POST'])
 def GetEmp():
-    return render_template("getemp.html", color=color_codes[COLOR], image=s3)
+    return render_template("getemp.html", color=color_codes[COLOR], image="/static/background.jpg", group_name=group_name, group_slogan=group_slogan)
 
 
 @app.route("/fetchdata", methods=['GET','POST'])
@@ -109,7 +132,8 @@ def FetchData():
         cursor.close()
 
     return render_template("getempoutput.html", id=output["emp_id"], fname=output["first_name"],
-                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], color=color_codes[COLOR], image=s3)
+                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], color=color_codes[COLOR], image="/static/background.jpg", group_name=group_name, group_slogan=group_slogan)
+                           
 
 if __name__ == '__main__':
     
@@ -117,6 +141,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--color', required=False)
     args = parser.parse_args()
+    
+    os.makedirs("static", exist_ok=True)
+    os.system(f"cp {local_image_path} static/background.jpg")
 
     if args.color:
         print("Color from command line argument =" + args.color)
@@ -134,4 +161,4 @@ if __name__ == '__main__':
         print("Color not supported. Received '" + COLOR + "' expected one of " + SUPPORTED_COLORS)
         exit(1)
 
-    app.run(host='0.0.0.0',port=8080,debug=True)
+    app.run(host='0.0.0.0',port=81,debug=True)
