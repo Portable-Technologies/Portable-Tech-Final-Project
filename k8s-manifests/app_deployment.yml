@@ -26,11 +26,20 @@ spec:
             - name: DBHOST
               value: "mysql-service.final.svc.cluster.local"
             - name: DBPORT
-              value: "3306"
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DBPORT
             - name: APP_COLOR
-              value: "blue"
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: APP_COLOR
             - name: DATABASE
-              value: "employees"
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: Database
             - name: BACKGROUND_IMAGE_URL
               valueFrom:
                 configMapKeyRef:
