@@ -9,8 +9,7 @@ metadata:
 spec:
   selector:
     app: employees
-  type: NodePort
+  type: LoadBalancer
   ports:
   - port: 81
     targetPort: 81
-    nodePort: 30000
