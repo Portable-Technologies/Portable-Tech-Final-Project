@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: app-config
+  namespace: final
 data:
   BACKGROUND_IMAGE_URL: "s3://afth-images/background1.jpg"
   GROUP_NAME: "Cloud Cadets"
