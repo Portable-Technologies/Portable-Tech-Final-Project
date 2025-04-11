@@ -19,7 +19,7 @@ DBPORT = int(os.environ.get("DBPORT"))
 image_url_s3 = os.getenv('BACKGROUND_IMAGE_URL')
 group_name = os.getenv('GROUP_NAME', 'My Group')
 group_slogan = os.getenv('GROUP_SLOGAN')
-local_image_path = '/static/'+key
+
 
 # AWS credentials from env
 session = boto3.session.Session(
@@ -34,6 +34,7 @@ s3 = session.client('s3')
 bucket = image_url_s3.replace("s3://", "").split('/')[0]
 key = "/".join(image_url_s3.replace("s3://", "").split('/')[1:])
 
+local_image_path = '/static/'+key
 # Download image from S3
 s3.download_file(bucket, key, local_image_path)
 print(f"Downloaded background image from {image_url_s3}")
