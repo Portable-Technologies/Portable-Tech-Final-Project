@@ -19,7 +19,7 @@ DBPORT = int(os.environ.get("DBPORT"))
 image_url_s3 = os.getenv('BACKGROUND_IMAGE_URL')
 group_name = os.getenv('GROUP_NAME', 'My Group')
 group_slogan = os.getenv('GROUP_SLOGAN')
-local_image_path = '/tmp/background.jpg'
+local_image_path = '/static/'+key
 
 # AWS credentials from env
 session = boto3.session.Session(
@@ -71,11 +71,11 @@ COLOR = random.choice(["red", "green", "blue", "blue2", "darkblue", "pink", "lim
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('addemp.html', color=color_codes[COLOR], image="/static/background.jpg", group_name=group_name, group_slogan=group_slogan)
+    return render_template('addemp.html', color=color_codes[COLOR], image=local_image_path, group_name=group_name, group_slogan=group_slogan)
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html', color=color_codes[COLOR], image="/static/background.jpg", group_name=group_name, group_slogan=group_slogan)
+    return render_template('about.html', color=color_codes[COLOR], image=local_image_path, group_name=group_name, group_slogan=group_slogan)
     
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
@@ -99,11 +99,11 @@ def AddEmp():
         cursor.close()
 
     print("all modification done...")
-    return render_template('addempoutput.html', name=emp_name, color=color_codes[COLOR], image="/static/background.jpg", group_name=group_name, group_slogan=group_slogan)
+    return render_template('addempoutput.html', name=emp_name, color=color_codes[COLOR], image=local_image_path, group_name=group_name, group_slogan=group_slogan)
 
 @app.route("/getemp", methods=['GET', 'POST'])
 def GetEmp():
-    return render_template("getemp.html", color=color_codes[COLOR], image="/static/background.jpg", group_name=group_name, group_slogan=group_slogan)
+    return render_template("getemp.html", color=color_codes[COLOR], image=local_image_path, group_name=group_name, group_slogan=group_slogan)
 
 
 @app.route("/fetchdata", methods=['GET','POST'])
@@ -132,7 +132,7 @@ def FetchData():
         cursor.close()
 
     return render_template("getempoutput.html", id=output["emp_id"], fname=output["first_name"],
-                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], color=color_codes[COLOR], image="/static/background.jpg", group_name=group_name, group_slogan=group_slogan)
+                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], color=color_codes[COLOR], image=local_image_path, group_name=group_name, group_slogan=group_slogan)
                            
 
 if __name__ == '__main__':
@@ -142,8 +142,6 @@ if __name__ == '__main__':
     parser.add_argument('--color', required=False)
     args = parser.parse_args()
     
-    os.makedirs("static", exist_ok=True)
-    os.system(f"cp {local_image_path} static/background.jpg")
 
     if args.color:
         print("Color from command line argument =" + args.color)
