@@ -7,3 +7,4 @@ data:
   BACKGROUND_IMAGE_URL: "s3://afth-images/background1.jpg"
   GROUP_NAME: "Cloud Cadets"
   GROUP_SLOGAN: "We Orchestrate. You Deploy."
+  Database: "employees"
