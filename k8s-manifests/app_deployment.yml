@@ -30,11 +30,6 @@ spec:
                 configMapKeyRef:
                   name: app-config
                   key: DBPORT
-            - name: APP_COLOR
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: APP_COLOR
             - name: DATABASE
               valueFrom:
                 configMapKeyRef:

@@ -9,4 +9,3 @@ data:
   GROUP_SLOGAN: "We Orchestrate. You Deploy."
   DATABASE: "employees"
   DBPORT: "3306"
-  APP_COLOR: "blue"
