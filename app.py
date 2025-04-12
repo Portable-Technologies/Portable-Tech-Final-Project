@@ -21,13 +21,13 @@ group_slogan = os.getenv('GROUP_SLOGAN')
 
 
 # AWS credentials from env
-session = boto3.session.Session(
-    region_name=os.getenv('AWS_REGION'),
-    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
-    aws_session_token=os.getenv('AWS_SESSION_TOKEN')
-)
-s3 = session.client('s3')
+# session = boto3.session.Session(
+#     region_name=os.getenv('AWS_REGION'),
+#     aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+#     aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+#     aws_session_token=os.getenv('AWS_SESSION_TOKEN')
+# )
+s3 = boto3.client('s3')
 
 # Extract bucket and key from the S3 URL
 bucket = image_url_s3.replace("s3://", "").split('/')[0]
