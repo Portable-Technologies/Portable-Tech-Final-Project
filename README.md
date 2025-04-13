@@ -32,7 +32,7 @@ Portable-Tech-Final-Project/
 `/usr/local/bin/aws cloud9 update-environment --environment-id $C9_PID --managed-credentials-action DISABLE`
 
 ### - Clear current credentials file
-`> -vf ${HOME}/.aws/credentials`
+`rm -vf ${HOME}/.aws/credentials`
 
 ### - Use credentials from AWS Academy AWS Details and copy them into ~/.aws/credentials file
 `vi ~/.aws/credentials` 
