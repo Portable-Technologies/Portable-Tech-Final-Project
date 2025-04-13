@@ -11,5 +11,5 @@ spec:
     app: employees
   type: LoadBalancer
   ports:
-  - port: 80
+  - port: 81
     targetPort: 81
